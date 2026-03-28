@@ -68,7 +68,7 @@
 	});
 </script>
 
-<div class="fixed top-0 right-0 left-0 flex h-20 items-center bg-mantle lg:left-60">
+<div class="fixed top-0 right-0 left-0 z-100 flex h-20 items-center bg-mantle lg:left-60">
 	<div class="flex w-full justify-center px-4">
 		<input
 			type="text"
