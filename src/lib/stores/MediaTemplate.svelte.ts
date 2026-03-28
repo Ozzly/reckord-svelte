@@ -1,6 +1,7 @@
 import type { Status } from '$lib/types';
 import moment from 'moment';
 import { loadFromStorage } from './storeHelpers';
+import { SvelteMap } from 'svelte/reactivity';
 
 const API_OPTIONS = {
 	method: 'GET',
@@ -83,7 +84,11 @@ export class MediaStore<
 			const response = await fetch(this.fetchUrl(query), API_OPTIONS);
 			if (!response.ok) throw new Error(response.statusText);
 			const data = await response.json();
-			this.results = (data.data ?? data.docs ?? []).map(this.transform);
+			const transformedData: T[] = (data.data ?? data.docs ?? []).map(this.transform);
+
+			this.results = [
+				...new SvelteMap(transformedData.map((item: T) => [item['id'] as T['id'], item])).values()
+			];
 		} catch (e) {
 			console.error(e);
 			this.results = [];
