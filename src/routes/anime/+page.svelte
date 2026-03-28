@@ -10,6 +10,13 @@
 			animeStore.addToList(anime, 'completed');
 		}
 	}
+
+	function setStatus(anime: Anime, currentStatus: Status | null, setStatus: Status) {
+		if (currentStatus) {
+			animeStore.removeFromList(anime.id, currentStatus);
+		}
+		animeStore.addToList(anime, setStatus);
+	}
 </script>
 
 <div class="flex flex-wrap justify-center gap-8">
@@ -44,20 +51,62 @@
 							</div>
 						{/if}
 					</button>
+					<!-- + button with drop-up overlay -->
 					<div
-						class="flex h-full w-1/5 items-center justify-center rounded-r-lg border-3 bg-surface0 text-text transition-all duration-300 hover:brightness-110 {status ===
+						class="group relative flex h-full w-1/5 cursor-pointer items-center justify-center rounded-r-lg border-3 bg-surface0 text-text transition-all duration-300 hover:brightness-110 {status ===
 						'completed'
-							? 'border-blue '
+							? 'border-blue'
 							: status === 'progress'
-								? 'border-peach '
+								? 'border-peach'
 								: status === 'planned'
-									? 'border-red '
-									: 'border-surface1 '}"
+									? 'border-red'
+									: 'border-surface1'}"
 					>
-						+
+						<span
+							class="icon-[tabler--dots-vertical] flex justify-center {status === 'completed'
+								? 'text-blue'
+								: status === 'progress'
+									? 'text-peach'
+									: status === 'planned'
+										? 'text-red'
+										: 'text-text'}"
+						></span>
+
+						<div
+							class="pointer-events-none absolute bottom-full left-1/2 z-10 w-fit -translate-x-3/5 pb-1 opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
+						>
+							<div class="flex h-fit w-fit flex-col overflow-hidden rounded-md bg-surface0">
+								<button
+									onclick={() => setStatus(anime, status, 'completed')}
+									class="dropdown-button hover:bg-blue"
+								>
+									<span class="icon-[fluent-mdl2--completed-solid] text-xs"></span>
+									Watched
+								</button><button
+									onclick={() => setStatus(anime, status, 'progress')}
+									class="dropdown-button hover:bg-peach"
+								>
+									<span class="icon-[uil--eye]"></span>
+									Watching
+								</button><button
+									onclick={() => setStatus(anime, status, 'planned')}
+									class="dropdown-button hover:bg-red"
+								>
+									<span class="icon-[uil--calendar]"></span>Planned
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</Card>
 	{/each}
 </div>
+
+<style lang="postcss">
+	@reference "../layout.css";
+
+	.dropdown-button {
+		@apply flex items-center gap-2 py-1 pr-4 pl-2 transition-colors duration-300 hover:text-surface0;
+	}
+</style>
