@@ -26,7 +26,7 @@
 				<div class="bottom-0 mx-auto flex h-10 w-50 text-base">
 					<button
 						onclick={() => onPillMainClick(anime, status)}
-						class="group relative flex h-full w-4/5 items-center justify-center rounded-l-lg border-3 transition hover:brightness-110 {status ===
+						class="group relative flex h-full w-4/5 items-center justify-center rounded-l-lg border-3 transition-all duration-300 hover:brightness-110 {status ===
 						'completed'
 							? 'border-blue bg-blue'
 							: status === 'progress'
@@ -45,7 +45,7 @@
 						{/if}
 					</button>
 					<div
-						class="flex h-full w-1/5 items-center justify-center rounded-r-lg border-3 bg-surface0 text-text {status ===
+						class="flex h-full w-1/5 items-center justify-center rounded-r-lg border-3 bg-surface0 text-text transition-all duration-300 hover:brightness-110 {status ===
 						'completed'
 							? 'border-blue '
 							: status === 'progress'
