@@ -27,6 +27,27 @@
 				<div>
 					<h1 class="line-clamp-2 text-lg">{anime.title}</h1>
 					<h2 class="text-sm text-subtext1">{anime.studio}</h2>
+					<div class="mt-3 flex justify-between">
+						<span
+							>{anime.videoType === 'Movie' ? 'Movie' : anime.episodes || 'No'}
+							{anime.videoType === 'Movie' ? '' : anime.videoType || 'Ep'}</span
+						>
+						•
+						<span>{anime.release_season} {anime.year}</span>
+
+						•
+						<span
+							class="flex items-center gap-1 {anime.score > 8
+								? 'text-green'
+								: anime.score > 6
+									? 'text-yellow'
+									: anime.score
+										? 'text-red'
+										: 'text-surface2'}
+						">{anime.score || 'N/A'}<span class="icon-[mingcute--star-fill]"></span></span
+						>
+					</div>
+					<div class="mt-2 flex gap-3"></div>
 				</div>
 
 				<!-- Status pill -->
@@ -43,6 +64,7 @@
 									: 'border-surface1 bg-surface1 text-text'}"
 					>
 						{status ? status?.slice(0, 1).toUpperCase() + status?.slice(1) : 'Mark Watched'}
+						<!-- Remove icon -->
 						{#if status}
 							<div
 								class="absolute right-0 flex items-center justify-center text-text opacity-0 transition-opacity duration-300 group-hover/close:opacity-100"
