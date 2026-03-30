@@ -33,7 +33,7 @@
 				<div class="bottom-0 mx-auto flex h-10 w-50 text-base">
 					<button
 						onclick={() => onPillMainClick(anime, status)}
-						class="group relative flex h-full w-4/5 items-center justify-center rounded-l-lg border-3 transition-all duration-300 hover:brightness-110 {status ===
+						class="banana group/close relative flex h-full w-4/5 items-center justify-center rounded-l-lg border-3 transition-all duration-300 hover:brightness-110 {status ===
 						'completed'
 							? 'border-blue bg-blue'
 							: status === 'progress'
@@ -45,15 +45,16 @@
 						{status ? status?.slice(0, 1).toUpperCase() + status?.slice(1) : 'Mark Watched'}
 						{#if status}
 							<div
-								class="absolute right-0 flex items-center justify-center text-text opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+								class="absolute right-0 flex items-center justify-center text-text opacity-0 transition-opacity duration-300 group-hover/close:opacity-100"
 							>
 								<span class="icon-[icon-park-solid--close-one] text-xs text-surface0"></span>
 							</div>
 						{/if}
 					</button>
-					<!-- + button with drop-up overlay -->
+
+					<!-- Dropup menu -->
 					<div
-						class="group relative flex h-full w-1/5 cursor-pointer items-center justify-center rounded-r-lg border-3 bg-surface0 text-text transition-all duration-300 hover:brightness-110 {status ===
+						class="group/dropup relative flex h-full w-1/5 cursor-pointer items-center justify-center rounded-r-lg border-3 bg-surface0 text-text transition-all duration-300 hover:brightness-110 {status ===
 						'completed'
 							? 'border-blue'
 							: status === 'progress'
@@ -73,7 +74,7 @@
 						></span>
 
 						<div
-							class="pointer-events-none absolute bottom-full left-1/2 z-10 w-fit -translate-x-3/5 pb-1 opacity-0 transition-opacity duration-150 group-hover:pointer-events-auto group-hover:opacity-100"
+							class="pointer-events-none absolute bottom-full left-1/2 z-10 w-fit -translate-x-3/5 pb-1 opacity-0 transition-opacity duration-150 group-hover/dropup:pointer-events-auto group-hover/dropup:opacity-100"
 						>
 							<div class="flex h-fit w-fit flex-col overflow-hidden rounded-md bg-surface0">
 								<button
