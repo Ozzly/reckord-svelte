@@ -25,7 +25,6 @@ function getSeason(month: number): string {
 }
 
 function convertAnimeVideoType(type: string, episodes: number): string {
-	console.log('converting', type, episodes);
 	if (episodes === 1) {
 		switch (type) {
 			case 'TV':

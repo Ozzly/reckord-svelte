@@ -27,7 +27,7 @@ export interface Anime {
 	dateAdded?: string;
 	progressValue?: number;
 	themes: string[];
-	videoType: VideoType;
+	videoType: string;
 }
 
 export interface Manga {
