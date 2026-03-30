@@ -20,8 +20,8 @@
 </script>
 
 <div class="flex flex-wrap justify-center gap-8">
-	{#each animeStore.results as anime (anime.id)}
-		{@const status = animeStore.getStatus(anime.id)}
+	{#each animeStore.enrichedResults as anime (anime.id)}
+		{@const status = anime.status}
 		<Card img={anime.cover_image}>
 			<div class="flex h-full flex-col justify-between">
 				<div>

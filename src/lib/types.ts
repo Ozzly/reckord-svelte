@@ -28,6 +28,8 @@ export interface Anime {
 	progressValue?: number;
 	themes: string[];
 	videoType: string;
+	personalRating?: number;
+	status?: Status | null;
 }
 
 export interface Manga {

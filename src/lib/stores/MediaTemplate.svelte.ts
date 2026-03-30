@@ -11,7 +11,14 @@ const API_OPTIONS = {
 };
 
 export class MediaStore<
-	T extends { id: number; title: string; progressValue?: number; dateAdded?: string }
+	T extends {
+		id: number;
+		title: string;
+		status: Status | null;
+		progressValue?: number;
+		dateAdded?: string;
+		personalRating?: number;
+	}
 > {
 	readonly prefix: string;
 	readonly fetchUrl: (query: string) => string;
@@ -22,6 +29,16 @@ export class MediaStore<
 	planned = $state<T[]>([]);
 	results = $state<T[]>([]);
 	isLoading = $state(false);
+	enrichedResults = $derived<T[]>(
+		this.results.map((item) => {
+			const status = this.getStatus(item.id);
+			return {
+				...item,
+				status,
+				personalRating: status ? this[status].find((i) => i.id === item.id)?.personalRating : null
+			};
+		})
+	);
 
 	constructor(config: {
 		prefix: string;
