@@ -94,6 +94,19 @@ export class MediaStore<
 		currentItem.progressValue = value;
 	}
 
+	setPersonalScore(id: T['id'], status: Status | null, rating: number) {
+		if (status === null) return;
+		const index = this[status].findIndex((i) => i.id === id);
+		if (index === -1) return;
+
+		const updatedItem = { ...this[status][index], personalRating: rating };
+		const updatedList = [...this[status]];
+		updatedList[index] = updatedItem;
+
+		this[status] = updatedList;
+		localStorage.setItem(`${this.prefix}_${status}`, JSON.stringify(updatedList));
+	}
+
 	async search(query: string) {
 		this.isLoading = true;
 		try {

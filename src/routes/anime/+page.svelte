@@ -3,7 +3,8 @@
 	import type { Anime, Status } from '$lib/types';
 	import Card from '../../components/card.svelte';
 
-	function onPillMainClick(anime: Anime, status: Status | null) {
+	function onPillMainClick(anime: Anime, status: Status) {
+		console.log('toggle ', anime.id, status);
 		if (status) {
 			animeStore.removeFromList(anime.id, status);
 		} else {
@@ -11,11 +12,17 @@
 		}
 	}
 
-	function setStatus(anime: Anime, currentStatus: Status | null, setStatus: Status) {
+	function setStatus(anime: Anime, currentStatus: Status, setStatus: Status) {
 		if (currentStatus) {
 			animeStore.removeFromList(anime.id, currentStatus);
 		}
 		animeStore.addToList(anime, setStatus);
+	}
+
+	function onPersonalScoreChange(e: Event, id: number, status: Status) {
+		const rating = Number((e.target as HTMLInputElement).value);
+		console.log(rating, id, status);
+		animeStore.setPersonalScore(id, status, rating);
 	}
 </script>
 
@@ -47,13 +54,23 @@
 						">{anime.score || 'N/A'}<span class="icon-[mingcute--star-fill]"></span></span
 						>
 					</div>
-					<div class="mt-2 flex gap-3"></div>
+					{#if anime.status === 'completed' || anime.status === 'progress'}
+						<div class="mt-2 flex items-center gap-3">
+							<span class="text-subtext0">Personal Rating: </span>
+
+							<input
+								class="w-20 rounded outline-surface1 group-hover:outline-2 group-hover:outline-dashed"
+								value={anime.personalRating}
+								oninput={(e) => onPersonalScoreChange(e, anime.id, anime.status || null)}
+							/>
+						</div>
+					{/if}
 				</div>
 
 				<!-- Status pill -->
 				<div class="bottom-0 mx-auto flex h-10 w-50 text-base">
 					<button
-						onclick={() => onPillMainClick(anime, status)}
+						onclick={() => onPillMainClick(anime, anime.status || null)}
 						class="banana group/close relative flex h-full w-4/5 items-center justify-center rounded-l-lg border-3 transition-all duration-300 hover:brightness-110 {status ===
 						'completed'
 							? 'border-blue bg-blue'
@@ -100,19 +117,19 @@
 						>
 							<div class="flex h-fit w-fit flex-col overflow-hidden rounded-md bg-surface0">
 								<button
-									onclick={() => setStatus(anime, status, 'completed')}
+									onclick={() => setStatus(anime, status || null, 'completed')}
 									class="dropdown-button hover:bg-blue"
 								>
 									<span class="icon-[fluent-mdl2--completed-solid] text-xs"></span>
 									Watched
 								</button><button
-									onclick={() => setStatus(anime, status, 'progress')}
+									onclick={() => setStatus(anime, status || null, 'progress')}
 									class="dropdown-button hover:bg-peach"
 								>
 									<span class="icon-[uil--eye]"></span>
 									Watching
 								</button><button
-									onclick={() => setStatus(anime, status, 'planned')}
+									onclick={() => setStatus(anime, status || null, 'planned')}
 									class="dropdown-button hover:bg-red"
 								>
 									<span class="icon-[uil--calendar]"></span>Planned

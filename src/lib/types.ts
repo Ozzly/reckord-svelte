@@ -1,4 +1,4 @@
-export type Status = 'completed' | 'progress' | 'planned';
+export type Status = 'completed' | 'progress' | 'planned' | null;
 export type Category = 'books' | 'anime' | 'manga' | 'movies' | 'shows';
 
 export interface Book {
@@ -29,7 +29,7 @@ export interface Anime {
 	themes: string[];
 	videoType: string;
 	personalRating?: number;
-	status?: Status | null;
+	status?: Status;
 }
 
 export interface Manga {
