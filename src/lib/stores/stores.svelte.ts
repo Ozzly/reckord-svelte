@@ -24,6 +24,33 @@ function getSeason(month: number): string {
 	return 'Unknown';
 }
 
+function convertAnimeVideoType(type: string, episodes: number): string {
+	console.log('converting', type, episodes);
+	if (episodes === 1) {
+		switch (type) {
+			case 'TV':
+				return 'Episode';
+			case 'Movie':
+				return 'Movie';
+			case 'tv_special':
+				return 'Special';
+			default:
+				return type;
+		}
+	} else {
+		switch (type) {
+			case 'TV':
+				return 'Episodes';
+			case 'Movie':
+				return 'Movies';
+			case 'tv_special':
+				return 'Specials';
+			default:
+				return type;
+		}
+	}
+}
+
 export const animeStore = new MediaStore<Anime>({
 	prefix: 'anime',
 	fetchUrl: (q) => `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(q)}`,
@@ -37,7 +64,7 @@ export const animeStore = new MediaStore<Anime>({
 		release_season: getSeason(d.aired.prop.from.month),
 		studio: d.studios[0]?.name || 'Unknown', // Should replace with logic to handle multiple studios
 		themes: d.themes,
-		videoType: d.type
+		videoType: convertAnimeVideoType(d.type, d.episodes)
 	})
 });
 
