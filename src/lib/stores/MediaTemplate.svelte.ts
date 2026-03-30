@@ -12,17 +12,18 @@ const API_OPTIONS = {
 
 export class MediaStore<
 	T extends {
-		id: number;
+		id: number | string;
 		title: string;
-		status: Status | null;
+		status?: Status | null;
 		progressValue?: number;
 		dateAdded?: string;
 		personalRating?: number;
-	}
+	},
+	R = unknown
 > {
 	readonly prefix: string;
 	readonly fetchUrl: (query: string) => string;
-	readonly transform: (data: any) => T;
+	readonly transform: (data: R) => T;
 
 	completed = $state<T[]>([]);
 	progress = $state<T[]>([]);
@@ -43,7 +44,7 @@ export class MediaStore<
 	constructor(config: {
 		prefix: string;
 		fetchUrl: (query: string) => string;
-		transform: (data: any) => T;
+		transform: (data: R) => T;
 	}) {
 		this.prefix = config.prefix;
 		this.fetchUrl = config.fetchUrl;

@@ -1,8 +1,8 @@
-export type Status = 'completed' | 'progress' | 'planned' | null;
+export type Status = 'completed' | 'progress' | 'planned';
 export type Category = 'books' | 'anime' | 'manga' | 'movies' | 'shows';
 
 export interface Book {
-	id: number;
+	id: string;
 	title: string;
 	author_name: string[];
 	edition_count: number;
@@ -12,6 +12,7 @@ export interface Book {
 	dateAdded?: string;
 	pages: number;
 	score: number | null;
+	status?: Status;
 }
 export type VideoType = 'TV' | 'Movie' | 'OVA' | 'ONA' | 'Music' | 'Special' | 'tv_special' | 'pv';
 
@@ -46,4 +47,5 @@ export interface Manga {
 	themes: string[];
 	dateAdded?: string;
 	progressValue?: number;
+	status?: Status;
 }

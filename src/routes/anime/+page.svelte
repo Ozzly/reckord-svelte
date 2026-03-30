@@ -3,7 +3,8 @@
 	import type { Anime, Status } from '$lib/types';
 	import Card from '../../components/card.svelte';
 
-	function onPillMainClick(anime: Anime, status: Status) {
+	function onPillMainClick(anime: Anime, status: Status | null) {
+		if (status === null) return;
 		console.log('toggle ', anime.id, status);
 		if (status) {
 			animeStore.removeFromList(anime.id, status);
@@ -12,14 +13,15 @@
 		}
 	}
 
-	function setStatus(anime: Anime, currentStatus: Status, setStatus: Status) {
+	function setStatus(anime: Anime, currentStatus: Status | null, setStatus: Status) {
 		if (currentStatus) {
 			animeStore.removeFromList(anime.id, currentStatus);
 		}
 		animeStore.addToList(anime, setStatus);
 	}
 
-	function onPersonalScoreChange(e: Event, id: number, status: Status) {
+	function onPersonalScoreChange(e: Event, id: number, status: Status | null) {
+		if (status === null) return;
 		const rating = Number((e.target as HTMLInputElement).value);
 		console.log(rating, id, status);
 		animeStore.setPersonalScore(id, status, rating);

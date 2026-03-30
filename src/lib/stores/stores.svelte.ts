@@ -1,7 +1,44 @@
 import { type Anime, type Book, type Manga } from '$lib/types';
 import { MediaStore } from './MediaTemplate.svelte';
 
-export const bookStore = new MediaStore<Book>({
+interface RawOpenLibraryBook {
+	key: string;
+	title: string;
+	cover_i: number;
+	first_publish_year: number;
+	author_name: string[];
+	edition_count: number;
+	number_of_pages_median: number;
+	ratings_average: number;
+}
+
+interface RawJikanAnime {
+	mal_id: number;
+	title: string;
+	score: number;
+	images: { jpg: { image_url: string } };
+	episodes: number;
+	aired: { prop: { from: { year: number; month: number } } };
+	studios: Array<{ name: string }>;
+	themes: string[];
+	type: string;
+}
+
+interface RawJikanManga {
+	mal_id: number;
+	title: string;
+	chapters: number | null;
+	volumes: number | null;
+	score: number;
+	authors: Array<{ name: string }>;
+	images: { jpg: { image_url: string } };
+	type: string;
+	status: string;
+	published: { prop: { from: { year: number } } };
+	themes: string[];
+}
+
+export const bookStore = new MediaStore<Book, RawOpenLibraryBook>({
 	prefix: 'books',
 	fetchUrl: (q) => `/api/openlibrary/search.json?title=${encodeURIComponent(q)}`,
 	transform: (d) => ({
@@ -39,7 +76,7 @@ function convertAnimeVideoType(type: string): string {
 	}
 }
 
-export const animeStore = new MediaStore<Anime>({
+export const animeStore = new MediaStore<Anime, RawJikanAnime>({
 	prefix: 'anime',
 	fetchUrl: (q) => `https://api.jikan.moe/v4/anime?q=${encodeURIComponent(q)}`,
 	transform: (d) => ({
@@ -56,7 +93,7 @@ export const animeStore = new MediaStore<Anime>({
 	})
 });
 
-export const mangaStore = new MediaStore<Manga>({
+export const mangaStore = new MediaStore<Manga, RawJikanManga>({
 	prefix: 'manga',
 	fetchUrl: (q) => `https://api.jikan.moe/v4/manga?q=${encodeURIComponent(q)}`,
 	transform: (d) => ({
@@ -65,7 +102,7 @@ export const mangaStore = new MediaStore<Manga>({
 		chapters: d.chapters,
 		volumes: d.volumes,
 		score: d.score,
-		authors: d.authors.map((author: any) => author.name),
+		authors: d.authors.map((author) => author.name),
 		cover_image: d.images.jpg.image_url,
 		type: d.type,
 		releaseStatus: d.status,
