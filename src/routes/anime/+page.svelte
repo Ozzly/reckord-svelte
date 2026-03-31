@@ -5,7 +5,7 @@
 
 	function onPillMainClick(anime: Anime, status: Status | null) {
 		if (status) {
-			animeStore.removeFromList(anime.id, status);
+			// animeStore.removeFromList(anime.id, status);
 		} else {
 			animeStore.addToList(anime, 'completed');
 		}
@@ -59,9 +59,10 @@
 							<span class="text-subtext0">Personal Rating: </span>
 
 							<input
-								class="w-20 rounded outline-surface1 group-hover:outline-2 group-hover:outline-dashed"
+								class="w-20 rounded outline-surface1 group-hover:outline-2 group-hover:outline-dashed focus:outline-mauve"
 								value={anime.personalRating}
 								oninput={(e) => onPersonalScoreChange(e, anime.id, anime.status || null)}
+								onmouseleave={() => this.blur()}
 							/>
 						</div>
 					{/if}
@@ -77,18 +78,31 @@
 							: status === 'progress'
 								? 'border-peach bg-peach'
 								: status === 'planned'
-									? 'border-red bg-red'
+									? 'border-pink bg-pink'
 									: 'border-surface1 bg-surface1 text-text'}"
 					>
-						{status ? status?.slice(0, 1).toUpperCase() + status?.slice(1) : 'Mark Watched'}
+						{#if status === 'completed'}
+							<span class="mr-2 icon-[fluent-mdl2--completed-solid] text-xs"></span>
+							{anime.dateAdded}
+						{:else if status === 'progress'}
+							Ep {anime.progressValue}
+							{#if anime.episodes}
+								/{anime.episodes}
+							{/if}
+						{:else if status === 'planned'}
+							Planned
+						{:else}
+							Mark Watched
+						{/if}
+
 						<!-- Remove icon -->
-						{#if status}
+						<!-- {#if status}
 							<div
 								class="absolute right-0 flex items-center justify-center text-text opacity-0 transition-opacity duration-300 group-hover/close:opacity-100"
 							>
 								<span class="icon-[icon-park-solid--close-one] text-xs text-surface0"></span>
 							</div>
-						{/if}
+						{/if} -->
 					</button>
 
 					<!-- Dropup menu -->
@@ -99,7 +113,7 @@
 							: status === 'progress'
 								? 'border-peach'
 								: status === 'planned'
-									? 'border-red'
+									? 'border-pink'
 									: 'border-surface1'}"
 					>
 						<span
@@ -108,7 +122,7 @@
 								: status === 'progress'
 									? 'text-peach'
 									: status === 'planned'
-										? 'text-red'
+										? 'text-pink'
 										: 'text-text'}"
 						></span>
 
@@ -126,14 +140,22 @@
 									onclick={() => setStatus(anime, status || null, 'progress')}
 									class="dropdown-button hover:bg-peach"
 								>
-									<span class="icon-[uil--eye]"></span>
+									<span class="icon-[uil--eye] text-xs"></span>
 									Watching
 								</button><button
 									onclick={() => setStatus(anime, status || null, 'planned')}
-									class="dropdown-button hover:bg-red"
+									class="dropdown-button hover:bg-pink"
 								>
-									<span class="icon-[uil--calendar]"></span>Planned
+									<span class="icon-[uil--calendar] text-xs"></span>Planned
 								</button>
+								{#if status}
+									<button
+										onclick={() => animeStore.removeFromList(anime.id, status)}
+										class="dropdown-button hover:bg-red"
+									>
+										<span class="icon-[icon-park-solid--close-one] text-xs"></span>Remove
+									</button>
+								{/if}
 							</div>
 						</div>
 					</div>
