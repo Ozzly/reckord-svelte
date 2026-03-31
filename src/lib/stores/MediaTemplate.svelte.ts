@@ -33,10 +33,13 @@ export class MediaStore<
 	enrichedResults = $derived<T[]>(
 		this.results.map((item) => {
 			const status = this.getStatus(item.id);
+			const storedItemDetails = status ? this[status].find((i) => i.id === item.id) : null;
 			return {
 				...item,
 				status,
-				personalRating: status ? this[status].find((i) => i.id === item.id)?.personalRating : null
+				personalRating: storedItemDetails?.personalRating,
+				dateAdded: storedItemDetails?.dateAdded,
+				progressValue: storedItemDetails?.progressValue
 			};
 		})
 	);
@@ -65,7 +68,7 @@ export class MediaStore<
 	addToList(item: T, status: Status) {
 		if (this[status].some((i) => i.id === item.id)) return;
 
-		const updatedItem = { ...item, dateAdded: moment().format('ll') };
+		const updatedItem = { ...item, dateAdded: moment().format('DD/MM/YY') };
 		if (status === 'progress') {
 			updatedItem.progressValue = 1;
 		}
