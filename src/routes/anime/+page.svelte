@@ -4,8 +4,6 @@
 	import Card from '../../components/card.svelte';
 
 	function onPillMainClick(anime: Anime, status: Status | null) {
-		if (status === null) return;
-		console.log('toggle ', anime.id, status);
 		if (status) {
 			animeStore.removeFromList(anime.id, status);
 		} else {
