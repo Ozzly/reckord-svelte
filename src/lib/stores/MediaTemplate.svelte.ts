@@ -89,15 +89,6 @@ export class MediaStore<
 		return this[status].find((i) => i.id === id)?.dateAdded || null;
 	}
 
-	// COME BACK TO THIS LOGIC IS BAD
-	setProgress(id: T['id'], value: number) {
-		const index = this.progress.findIndex((i) => i.id === id);
-		if (index === -1) return;
-
-		const currentItem = this.progress[index];
-		currentItem.progressValue = value;
-	}
-
 	setPersonalScore(id: T['id'], status: Status | null, rating: number) {
 		if (status === null) return;
 		const index = this[status].findIndex((i) => i.id === id);
@@ -109,6 +100,22 @@ export class MediaStore<
 
 		this[status] = updatedList;
 		localStorage.setItem(`${this.prefix}_${status}`, JSON.stringify(updatedList));
+	}
+
+	setProgressValue(id: T['id'], value: number | null) {
+		const index = this.progress.findIndex((i) => i.id === id);
+		if (index === -1) return;
+
+		let updatedItem;
+		if (value === null) {
+			updatedItem = { ...this.progress[index], progressValue: undefined };
+		} else {
+			updatedItem = { ...this.progress[index], progressValue: value };
+		}
+		const updatedList = [...this.progress];
+		updatedList[index] = updatedItem;
+		this.progress = updatedList;
+		localStorage.setItem(`${this.prefix}_progress`, JSON.stringify(updatedList));
 	}
 
 	async search(query: string) {

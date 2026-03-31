@@ -24,6 +24,20 @@
 		console.log(rating, id, status);
 		animeStore.setPersonalScore(id, status, rating);
 	}
+
+	function onProgressUpdate(e: Event, id: number) {
+		const value = Number((e.target as HTMLInputElement).value);
+		if (isNaN(value) || value === 0) animeStore.setProgressValue(id, null);
+		else animeStore.setProgressValue(id, value);
+	}
+
+	function handleProgressButtonClick(anime: Anime, increment: number) {
+		const currentProgress = anime.progressValue || 0;
+		const newProgress = currentProgress + increment;
+		if (newProgress < 0) return;
+		if (anime.episodes && newProgress > anime.episodes) return;
+		animeStore.setProgressValue(anime.id, newProgress);
+	}
 </script>
 
 <div class="flex flex-wrap justify-center gap-8">
@@ -59,10 +73,10 @@
 							<span class="text-subtext0">Personal Rating: </span>
 
 							<input
-								class="w-20 rounded outline-surface1 group-hover:outline-2 group-hover:outline-dashed focus:outline-mauve"
+								class="w-20 rounded px-2 outline-surface1 group-hover:outline-2 group-hover:outline-dashed focus:outline-mauve"
 								value={anime.personalRating}
 								oninput={(e) => onPersonalScoreChange(e, anime.id, anime.status || null)}
-								onmouseleave={() => this.blur()}
+								onmouseleave={(e) => (e.target as HTMLInputElement).blur()}
 							/>
 						</div>
 					{/if}
@@ -85,7 +99,36 @@
 							<span class="mr-2 icon-[fluent-mdl2--completed-solid] text-xs"></span>
 							{anime.dateAdded}
 						{:else if status === 'progress'}
-							Ep {anime.progressValue}
+							Ep
+							<div class="ml-1 group-hover:hidden">{anime.progressValue || 0}</div>
+							<div class="ml-1 hidden items-center group-hover:flex">
+								<span
+									role="button"
+									tabindex="0"
+									title="Decrease"
+									class="icon-[icons8--minus] cursor-pointer"
+									onclick={() => handleProgressButtonClick(anime, -1)}
+									onkeydown={(e) =>
+										(e.key === 'Enter' || e.key === ' ') && handleProgressButtonClick(anime, -1)}
+								>
+								</span>
+								<input
+									class="w-10 rounded-md border-2 border-dashed focus:outline-none"
+									value={anime.progressValue}
+									oninput={(e) => onProgressUpdate(e, anime.id)}
+									onmouseleave={(e) => (e.target as HTMLInputElement).blur()}
+								/>
+								<span
+									role="button"
+									tabindex="0"
+									title="Increase"
+									class="icon-[icons8--plus] cursor-pointer"
+									onclick={() => handleProgressButtonClick(anime, 1)}
+									onkeydown={(e) =>
+										(e.key === 'Enter' || e.key === ' ') && handleProgressButtonClick(anime, 1)}
+								>
+								</span>
+							</div>
 							{#if anime.episodes}
 								/{anime.episodes}
 							{/if}
