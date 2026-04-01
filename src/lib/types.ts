@@ -49,3 +49,18 @@ export interface Manga {
 	progressValue?: number;
 	status?: Status;
 }
+
+export interface CardData {
+	id: string | number;
+	title: string;
+	subheading: string;
+	image: string;
+	progressMax: number;
+	releaseDate: string;
+	score: number;
+	leftDetails: string;
+	progressValue?: number;
+	dateAdded?: string;
+	status?: Status;
+	personalRating?: number;
+}
