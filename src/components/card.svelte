@@ -23,6 +23,16 @@
 		onProgressChange: (value: number) => void;
 		onStatusChange: (newStatus: Status | null) => void;
 	} = $props();
+
+	function progressIncrease() {
+		onProgressChange(
+			progressValue ? (progressValue + 1 <= progressMax ? progressValue + 1 : progressMax) : 1
+		);
+	}
+
+	function progressDecrease() {
+		onProgressChange(progressValue ? (progressValue - 1 >= 0 ? progressValue - 1 : 0) : 0);
+	}
 </script>
 
 <div class="group relative w-120">
@@ -103,8 +113,8 @@
 									tabindex="0"
 									title="Decrease"
 									class="icon-[icons8--minus] cursor-pointer"
-									onclick={() => onProgressChange(-1)}
-									onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && onProgressChange(-1)}
+									onclick={progressDecrease}
+									onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && progressDecrease()}
 								>
 								</span>
 								<input
@@ -118,8 +128,8 @@
 									tabindex="0"
 									title="Increase"
 									class="icon-[icons8--plus] cursor-pointer"
-									onclick={() => onProgressChange(1)}
-									onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && onProgressChange(1)}
+									onclick={progressIncrease}
+									onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && progressIncrease()}
 								>
 								</span>
 							</div>

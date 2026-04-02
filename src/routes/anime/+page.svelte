@@ -22,18 +22,9 @@
 		animeStore.setPersonalScore(id, status, value === 0 ? null : value);
 	}
 
-	function onProgressUpdate(e: Event, id: number) {
-		const value = Number((e.target as HTMLInputElement).value);
+	function onProgressUpdate(value: number, id: number) {
 		if (isNaN(value) || value === 0) animeStore.setProgressValue(id, null);
 		else animeStore.setProgressValue(id, value);
-	}
-
-	function handleProgressButtonClick(anime: Anime, increment: number) {
-		const currentProgress = anime.progressValue || 0;
-		const newProgress = currentProgress + increment;
-		if (newProgress < 0) return;
-		if (anime.episodes && newProgress > anime.episodes) return;
-		animeStore.setProgressValue(anime.id, newProgress);
 	}
 </script>
 
@@ -44,8 +35,7 @@
 			onPersonalScoreChange={(value) =>
 				onPersonalScoreChange(value, anime.id, anime.status || null)}
 			onPillMainClick={(status) => onPillMainClick(anime, status)}
-			onProgressChange={(value) =>
-				console.log('Progress changed:', value, 'for anime ID:', anime.id)}
+			onProgressChange={(value) => onProgressUpdate(value, anime.id)}
 			onStatusChange={(newStatus) => setStatus(anime, anime.status || null, newStatus)}
 		></Card>
 	{/each}
