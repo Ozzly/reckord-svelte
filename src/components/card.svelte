@@ -36,7 +36,7 @@
 </script>
 
 <div class="group relative w-120">
-	<!-- Gaming corner brackets -->
+	<!-- Corner brackets -->
 	<span class="corner corner-tl"></span>
 	<span class="corner corner-tr"></span>
 	<span class="corner corner-bl"></span>
@@ -200,7 +200,13 @@
 	</div>
 </div>
 
-<style>
+<style lang="postcss">
+	@reference "../routes/layout.css";
+
+	.dropdown-button {
+		@apply flex items-center gap-2 py-1 pr-4 pl-2 transition-colors duration-300 hover:text-surface0;
+	}
+
 	.corner {
 		position: absolute;
 		width: 20px;

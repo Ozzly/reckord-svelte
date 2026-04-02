@@ -40,11 +40,3 @@
 		></Card>
 	{/each}
 </div>
-
-<style lang="postcss">
-	@reference "../layout.css";
-
-	.dropdown-button {
-		@apply flex items-center gap-2 py-1 pr-4 pl-2 transition-colors duration-300 hover:text-surface0;
-	}
-</style>
