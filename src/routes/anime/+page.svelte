@@ -4,25 +4,12 @@
 	import type { Anime, Status } from '$lib/types';
 	import Card from '../../components/card.svelte';
 
-	function onPillMainClick(anime: Anime, status: Status | null) {
-		if (status) {
-			// animeStore.removeFromList(anime.id, status);
-		} else {
-			animeStore.addToList(anime, 'completed');
-		}
+	function setStatus(anime: Anime, newStatus: Status | null) {
+		if (anime.status) animeStore.removeFromList(anime.id, anime.status);
+		if (newStatus) animeStore.addToList(anime, newStatus);
 	}
 
-	function setStatus(anime: Anime, currentStatus: Status | null, setStatus: Status | null) {
-		if (currentStatus) animeStore.removeFromList(anime.id, currentStatus);
-		if (setStatus) animeStore.addToList(anime, setStatus);
-	}
-
-	function onPersonalScoreChange(value: number, id: number, status: Status | null) {
-		console.log(value, id, status);
-		animeStore.setPersonalScore(id, status, value === 0 ? null : value);
-	}
-
-	function onProgressUpdate(value: number, id: number) {
+	function onProgressChange(value: number, id: number) {
 		if (isNaN(value) || value === 0) animeStore.setProgressValue(id, null);
 		else animeStore.setProgressValue(id, value);
 	}
@@ -33,10 +20,10 @@
 		<Card
 			{...animeToCardData(anime)}
 			onPersonalScoreChange={(value) =>
-				onPersonalScoreChange(value, anime.id, anime.status || null)}
-			onPillMainClick={(status) => onPillMainClick(anime, status)}
-			onProgressChange={(value) => onProgressUpdate(value, anime.id)}
-			onStatusChange={(newStatus) => setStatus(anime, anime.status || null, newStatus)}
+				animeStore.setPersonalScore(anime.id, anime.status || null, value === 0 ? null : value)}
+			onPillMainClick={() => !anime.status && animeStore.addToList(anime, 'completed')}
+			onStatusChange={(newStatus) => setStatus(anime, newStatus)}
+			onProgressChange={(value) => onProgressChange(value, anime.id)}
 		></Card>
 	{/each}
 </div>
