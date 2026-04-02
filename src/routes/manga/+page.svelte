@@ -24,6 +24,7 @@
 			onPillMainClick={() => !manga.status && mangaStore.addToList(manga, 'completed')}
 			onStatusChange={(newStatus) => setStatus(manga, newStatus)}
 			onProgressChange={(value) => onProgressChange(value, manga.id)}
+			statusVerbs={{ completed: 'Read', progress: 'Reading', planned: 'Planned' }}
 		/>
 	{/each}
 </div>

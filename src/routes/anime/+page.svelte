@@ -24,6 +24,7 @@
 			onPillMainClick={() => !anime.status && animeStore.addToList(anime, 'completed')}
 			onStatusChange={(newStatus) => setStatus(anime, newStatus)}
 			onProgressChange={(value) => onProgressChange(value, anime.id)}
+			statusVerbs={{ completed: 'Watched', progress: 'Watching', planned: 'Planned' }}
 		></Card>
 	{/each}
 </div>

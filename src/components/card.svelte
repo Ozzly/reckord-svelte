@@ -16,12 +16,14 @@
 		onPersonalScoreChange,
 		onPillMainClick,
 		onProgressChange,
-		onStatusChange
+		onStatusChange,
+		statusVerbs
 	}: CardData & {
 		onPersonalScoreChange: (value: number) => void;
 		onPillMainClick: () => void;
 		onProgressChange: (value: number) => void;
 		onStatusChange: (newStatus: Status | null) => void;
+		statusVerbs: { completed: string; progress: string; planned: string };
 	} = $props();
 
 	function progressIncrease() {
@@ -91,7 +93,7 @@
 				<!-- Status pill -->
 				<div class="bottom-0 mx-auto flex h-10 w-50 text-base">
 					<button
-						onclick={() => onPillMainClick(status || null)}
+						onclick={() => onPillMainClick()}
 						class="banana group/close relative flex h-full w-4/5 items-center justify-center rounded-l-lg border-3 transition-all duration-300 hover:brightness-110 {status ===
 						'completed'
 							? 'border-blue bg-blue'
@@ -105,7 +107,6 @@
 							<span class="mr-2 icon-[fluent-mdl2--completed-solid] text-xs"></span>
 							{dateAdded}
 						{:else if status === 'progress'}
-							Ep
 							<div class="ml-1 group-hover:hidden">{progressValue || 0}</div>
 							<div class="ml-1 hidden items-center group-hover:flex">
 								<span
@@ -139,7 +140,7 @@
 						{:else if status === 'planned'}
 							Planned
 						{:else}
-							Mark Watched
+							Mark {statusVerbs.completed}
 						{/if}
 					</button>
 
@@ -173,18 +174,18 @@
 									class="dropdown-button hover:bg-blue"
 								>
 									<span class="icon-[fluent-mdl2--completed-solid] text-xs"></span>
-									Watched
+									{statusVerbs.completed}
 								</button><button
 									onclick={() => onStatusChange('progress')}
 									class="dropdown-button hover:bg-peach"
 								>
 									<span class="icon-[uil--eye] text-xs"></span>
-									Watching
+									{statusVerbs.progress}
 								</button><button
 									onclick={() => onStatusChange('planned')}
 									class="dropdown-button hover:bg-pink"
 								>
-									<span class="icon-[uil--calendar] text-xs"></span>Planned
+									<span class="icon-[uil--calendar] text-xs"></span>{statusVerbs.planned}
 								</button>
 								{#if status}
 									<button onclick={() => onStatusChange(null)} class="dropdown-button hover:bg-red">
