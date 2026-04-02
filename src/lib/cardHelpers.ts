@@ -1,4 +1,4 @@
-import type { Anime, CardData } from './types';
+import type { Anime, CardData, Manga } from './types';
 
 export function animeToCardData(anime: Anime): CardData {
 	return {
@@ -14,5 +14,22 @@ export function animeToCardData(anime: Anime): CardData {
 		dateAdded: anime.dateAdded,
 		status: anime.status,
 		personalRating: anime.personalRating
+	};
+}
+
+export function mangaToCardData(manga: Manga): CardData {
+	return {
+		id: manga.id,
+		title: manga.title,
+		subheading: manga.authors.join(', '),
+		image: manga.cover_image,
+		progressMax: manga.chapters,
+		releaseDate: `${manga.releaseYear}`,
+		score: manga.score,
+		leftDetails: `${manga.chapters} ch ${manga.volumes} vol`,
+		progressValue: manga.progressValue,
+		dateAdded: manga.dateAdded,
+		status: manga.status,
+		personalRating: manga.personalRating
 	};
 }

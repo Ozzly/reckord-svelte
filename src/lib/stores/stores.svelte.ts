@@ -27,8 +27,8 @@ interface RawJikanAnime {
 interface RawJikanManga {
 	mal_id: number;
 	title: string;
-	chapters: number | null;
-	volumes: number | null;
+	chapters: number;
+	volumes: number;
 	score: number;
 	authors: Array<{ name: string }>;
 	images: { jpg: { image_url: string } };

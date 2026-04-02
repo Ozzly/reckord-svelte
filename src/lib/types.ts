@@ -40,13 +40,14 @@ export interface Manga {
 	authors: string[];
 	cover_image: string;
 	type: string;
-	chapters: number | null;
-	volumes: number | null;
+	chapters: number;
+	volumes: number;
 	releaseStatus: string;
-	releaseYear: number | null;
+	releaseYear: number;
 	themes: string[];
 	dateAdded?: string;
 	progressValue?: number;
+	personalRating?: number;
 	status?: Status;
 }
 

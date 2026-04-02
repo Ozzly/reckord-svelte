@@ -19,7 +19,7 @@
 		onStatusChange
 	}: CardData & {
 		onPersonalScoreChange: (value: number) => void;
-		onPillMainClick: (status: Status | null) => void;
+		onPillMainClick: () => void;
 		onProgressChange: (value: number) => void;
 		onStatusChange: (newStatus: Status | null) => void;
 	} = $props();
