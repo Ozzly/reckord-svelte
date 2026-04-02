@@ -89,7 +89,7 @@ export class MediaStore<
 		return this[status].find((i) => i.id === id)?.dateAdded || null;
 	}
 
-	setPersonalScore(id: T['id'], status: Status | null, rating: number) {
+	setPersonalScore(id: T['id'], status: Status | null, rating: number | null) {
 		if (status === null) return;
 		const index = this[status].findIndex((i) => i.id === id);
 		if (index === -1) return;

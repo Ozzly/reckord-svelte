@@ -2,7 +2,6 @@
 	import type { CardData, Status } from '$lib/types';
 
 	let {
-		id,
 		image,
 		title,
 		subheading,
@@ -19,7 +18,7 @@
 		onProgressChange,
 		onStatusChange
 	}: CardData & {
-		onPersonalScoreChange: (e: Event, id: number, status: Status | null) => void;
+		onPersonalScoreChange: (value: number) => void;
 		onPillMainClick: (status: Status | null) => void;
 		onProgressChange: (value: number) => void;
 		onStatusChange: (newStatus: Status | null) => void;
@@ -72,7 +71,7 @@
 							<input
 								class="w-20 rounded px-2 outline-surface1 group-hover:outline-2 group-hover:outline-dashed focus:outline-mauve"
 								value={personalRating}
-								oninput={(e) => onPersonalScoreChange(e, id, status)}
+								oninput={(e) => onPersonalScoreChange(Number((e.target as HTMLInputElement).value))}
 								onmouseleave={(e) => (e.target as HTMLInputElement).blur()}
 							/>
 						</div>

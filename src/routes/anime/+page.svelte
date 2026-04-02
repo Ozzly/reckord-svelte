@@ -17,11 +17,9 @@
 		if (setStatus) animeStore.addToList(anime, setStatus);
 	}
 
-	function onPersonalScoreChange(e: Event, id: number, status: Status | null) {
-		if (status === null) return;
-		const rating = Number((e.target as HTMLInputElement).value);
-		console.log(rating, id, status);
-		animeStore.setPersonalScore(id, status, rating);
+	function onPersonalScoreChange(value: number, id: number, status: Status | null) {
+		console.log(value, id, status);
+		animeStore.setPersonalScore(id, status, value === 0 ? null : value);
 	}
 
 	function onProgressUpdate(e: Event, id: number) {
@@ -43,7 +41,8 @@
 	{#each animeStore.enrichedResults as anime (anime.id)}
 		<Card
 			{...animeToCardData(anime)}
-			{onPersonalScoreChange}
+			onPersonalScoreChange={(value) =>
+				onPersonalScoreChange(value, anime.id, anime.status || null)}
 			onPillMainClick={(status) => onPillMainClick(anime, status)}
 			onProgressChange={(value) =>
 				console.log('Progress changed:', value, 'for anime ID:', anime.id)}
