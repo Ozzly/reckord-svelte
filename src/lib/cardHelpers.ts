@@ -21,7 +21,7 @@ export function mangaToCardData(manga: Manga): CardData {
 	return {
 		id: manga.id,
 		title: manga.title,
-		subheading: manga.authors.join(', '),
+		subheading: manga.authors ? manga.authors.join(', ') : 'Unknown',
 		image: manga.cover_image,
 		progressMax: manga.chapters,
 		releaseDate: `${manga.releaseYear}`,
@@ -38,7 +38,7 @@ export function bookToCardData(book: Book): CardData {
 	return {
 		id: book.id,
 		title: book.title,
-		subheading: book.author_name.join(', '),
+		subheading: book.author_name ? book.author_name.join(', ') : 'Unknown',
 		image: `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`,
 		progressMax: book.pages,
 		releaseDate: String(book.first_publish_year),

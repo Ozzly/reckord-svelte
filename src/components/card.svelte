@@ -58,7 +58,7 @@
 			<div class="flex h-full flex-col justify-between">
 				<div>
 					<h1 class="line-clamp-2 text-lg">{title}</h1>
-					<h2 class="text-sm text-subtext1">{subheading}</h2>
+					<h2 class="line-clamp-1 text-sm text-subtext1" title={subheading}>{subheading}</h2>
 					<div class="mt-3 flex justify-between">
 						<span>{leftDetails}</span>
 						•
