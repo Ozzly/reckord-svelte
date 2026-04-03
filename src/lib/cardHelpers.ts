@@ -1,4 +1,4 @@
-import type { Anime, CardData, Manga } from './types';
+import type { Anime, Book, CardData, Manga } from './types';
 
 export function animeToCardData(anime: Anime): CardData {
 	return {
@@ -31,5 +31,22 @@ export function mangaToCardData(manga: Manga): CardData {
 		dateAdded: manga.dateAdded,
 		status: manga.status,
 		personalRating: manga.personalRating
+	};
+}
+
+export function bookToCardData(book: Book): CardData {
+	return {
+		id: book.id,
+		title: book.title,
+		subheading: book.author_name.join(', '),
+		image: `https://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`,
+		progressMax: book.pages,
+		releaseDate: String(book.first_publish_year),
+		score: Number(book.score),
+		leftDetails: `${book.pages}*`,
+		progressValue: book.progressValue,
+		dateAdded: book.dateAdded,
+		status: book.status,
+		personalRating: book.personalRating
 	};
 }

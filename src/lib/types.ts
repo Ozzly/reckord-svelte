@@ -11,8 +11,9 @@ export interface Book {
 	progressValue?: number;
 	dateAdded?: string;
 	pages: number;
-	score: number | null;
+	score: number;
 	status?: Status;
+	personalRating?: number;
 }
 export type VideoType = 'TV' | 'Movie' | 'OVA' | 'ONA' | 'Music' | 'Special' | 'tv_special' | 'pv';
 
