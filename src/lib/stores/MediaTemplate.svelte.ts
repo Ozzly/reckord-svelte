@@ -125,7 +125,9 @@ export class MediaStore<
 			const response = await fetch(this.fetchUrl(query), API_OPTIONS);
 			if (!response.ok) throw new Error(response.statusText);
 			const data = await response.json();
-			const transformedData: T[] = (data.data ?? data.docs ?? []).map(this.transform);
+			const transformedData: T[] = (data.data ?? data.docs ?? data.results ?? []).map(
+				this.transform
+			);
 
 			this.results = [
 				...new SvelteMap(transformedData.map((item: T) => [item['id'] as T['id'], item])).values()

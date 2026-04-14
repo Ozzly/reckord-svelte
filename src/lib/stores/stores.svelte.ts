@@ -1,4 +1,4 @@
-import { type Anime, type Book, type Manga } from '$lib/types';
+import { type Movie, type Anime, type Book, type Manga } from '$lib/types';
 import { MediaStore } from './MediaTemplate.svelte';
 
 interface RawOpenLibraryBook {
@@ -108,5 +108,22 @@ export const mangaStore = new MediaStore<Manga, RawJikanManga>({
 		releaseStatus: d.status,
 		releaseYear: d.published.prop.from.year,
 		themes: d.themes
+	})
+});
+
+export const movieStore = new MediaStore<Movie>({
+	prefix: 'movies',
+	fetchUrl: (q) => {
+		const key = localStorage.getItem('tmdb_api_key');
+		if (key)
+			return `https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${encodeURIComponent(q)}`;
+		return `/api/tmdb/movie?q=${encodeURIComponent(q)}`;
+	},
+	transform: (d: any) => ({
+		id: d.id,
+		title: d.title,
+		cover_image: d.poster_path,
+		score: d.vote_average,
+		release_year: d.relase_date ? parseInt(d.relase_date.split('-')[0]) : 0
 	})
 });

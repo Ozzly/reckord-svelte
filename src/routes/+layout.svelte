@@ -5,7 +5,7 @@
 	import Header from './header.svelte';
 
 	import { setSearchContext } from './context';
-	import { bookStore, animeStore, mangaStore } from '$lib/stores/stores.svelte';
+	import { bookStore, animeStore, mangaStore, movieStore } from '$lib/stores/stores.svelte';
 	import type { Category } from '$lib/types';
 
 	let { children } = $props();
@@ -17,7 +17,7 @@
 		books: bookStore,
 		anime: animeStore,
 		manga: mangaStore,
-		movies: animeStore, // replace when movieStore exists
+		movies: movieStore,
 		shows: animeStore // replace when showStore exists
 	};
 
@@ -81,7 +81,7 @@
 		<!-- Header -->
 		<Header />
 		<!-- Child content -->
-		<div class="mt-20 flex h-fit flex-1 bg-base p-10">
+		<div class="mt-20 flex h-fit flex-1 flex-col bg-base p-10">
 			{@render children()}
 		</div>
 	</div>

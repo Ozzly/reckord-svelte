@@ -1,4 +1,4 @@
-import type { Anime, Book, CardData, Manga } from './types';
+import type { Anime, Book, CardData, Manga, Movie } from './types';
 
 export function animeToCardData(anime: Anime): CardData {
 	return {
@@ -48,5 +48,22 @@ export function bookToCardData(book: Book): CardData {
 		dateAdded: book.dateAdded,
 		status: book.status,
 		personalRating: book.personalRating
+	};
+}
+
+export function movieToCardData(movie: Movie): CardData {
+	return {
+		id: movie.id,
+		title: movie.title,
+		subheading: '',
+		image: 'https://image.tmdb.org/t/p/w500' + movie.cover_image,
+		progressMax: 1,
+		releaseDate: String(movie.release_year),
+		score: movie.score,
+		leftDetails: '',
+		progressValue: movie.progressValue,
+		dateAdded: movie.dateAdded,
+		status: movie.status,
+		personalRating: movie.personalRating
 	};
 }
