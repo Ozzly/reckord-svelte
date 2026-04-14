@@ -64,6 +64,18 @@ export interface Movie {
 	personalRating?: number;
 }
 
+export interface Show {
+	id: number;
+	title: string;
+	score: number;
+	cover_image: string;
+	release_year: number;
+	dateAdded?: string;
+	progressValue?: number;
+	status?: Status;
+	personalRating?: number;
+}
+
 export interface CardData {
 	id: string | number;
 	title: string;

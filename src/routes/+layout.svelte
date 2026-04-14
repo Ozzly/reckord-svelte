@@ -5,7 +5,13 @@
 	import Header from './header.svelte';
 
 	import { setSearchContext } from './context';
-	import { bookStore, animeStore, mangaStore, movieStore } from '$lib/stores/stores.svelte';
+	import {
+		bookStore,
+		animeStore,
+		mangaStore,
+		movieStore,
+		showStore
+	} from '$lib/stores/stores.svelte';
 	import type { Category } from '$lib/types';
 
 	let { children } = $props();
@@ -18,7 +24,7 @@
 		anime: animeStore,
 		manga: mangaStore,
 		movies: movieStore,
-		shows: animeStore // replace when showStore exists
+		shows: showStore
 	};
 
 	const categories: Category[] = ['books', 'anime', 'manga', 'movies', 'shows'];

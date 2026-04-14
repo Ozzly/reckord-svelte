@@ -1,4 +1,4 @@
-import { type Movie, type Anime, type Book, type Manga } from '$lib/types';
+import { type Movie, type Anime, type Book, type Manga, type Show } from '$lib/types';
 import { MediaStore } from './MediaTemplate.svelte';
 
 interface RawOpenLibraryBook {
@@ -125,5 +125,22 @@ export const movieStore = new MediaStore<Movie>({
 		cover_image: d.poster_path,
 		score: d.vote_average,
 		release_year: d.relase_date ? parseInt(d.relase_date.split('-')[0]) : 0
+	})
+});
+
+export const showStore = new MediaStore<Show>({
+	prefix: 'shows',
+	fetchUrl: (q) => {
+		const key = localStorage.getItem('tmdb_api_key');
+		if (key)
+			return `https://api.themoviedb.org/3/search/tv?api_key=${key}&query=${encodeURIComponent(q)}`;
+		return `/api/tmdb/tv?q=${encodeURIComponent(q)}`;
+	},
+	transform: (d: any) => ({
+		id: d.id,
+		title: d.name,
+		cover_image: d.poster_path,
+		score: d.vote_average,
+		release_year: d.first_air_date ? parseInt(d.first_air_date.split('-')[0]) : 0
 	})
 });
