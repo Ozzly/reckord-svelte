@@ -40,7 +40,7 @@ interface RawJikanManga {
 
 export const bookStore = new MediaStore<Book, RawOpenLibraryBook>({
 	prefix: 'books',
-	fetchUrl: (q) => `/api/openlibrary/search.json?title=${encodeURIComponent(q)}`,
+	fetchUrl: (q) => `https://openlibrary.org/search.json?title=${encodeURIComponent(q)}`,
 	transform: (d) => ({
 		id: d.key,
 		title: d.title,
