@@ -40,7 +40,14 @@ interface RawJikanManga {
 
 export const bookStore = new MediaStore<Book, RawOpenLibraryBook>({
 	prefix: 'books',
-	fetchUrl: (q) => `https://openlibrary.org/search.json?title=${encodeURIComponent(q)}`,
+	fetchUrl: (q) => {
+		const key = localStorage.getItem('google_books_api_key');
+		const useProxy = localStorage.getItem('use_books_backend_proxy') === 'true';
+		if (key)
+			return `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&key=${key}`;
+		if (useProxy) return `/api/book?q=${encodeURIComponent(q)}`;
+		return `https://openlibrary.org/search.json?title=${encodeURIComponent(q)}`;
+	},
 	transform: (d) => ({
 		id: d.key,
 		title: d.title,
