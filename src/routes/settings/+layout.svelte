@@ -17,7 +17,7 @@
 	</div>
 
 	<!-- Page Content -->
-	<div class="h-fit w-full rounded-lg bg-surface0 p-3">
+	<div class="h-fit w-full rounded-lg bg-surface0 p-8">
 		{@render children()}
 	</div>
 </div>
