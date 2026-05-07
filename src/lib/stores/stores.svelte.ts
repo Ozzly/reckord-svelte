@@ -149,5 +149,17 @@ export const showStore = new MediaStore<Show>({
 		cover_image: d.poster_path,
 		score: d.vote_average,
 		release_year: d.first_air_date ? parseInt(d.first_air_date.split('-')[0]) : 0
+	}),
+	detailUrl: (id) => {
+		const key = localStorage.getItem('tmdb_api_key');
+		if (key) return `https://api.themoviedb.org/3/tv/${id}?api_key=${key}`;
+		return `/api/tmdb/tv/${id}`; // ADD BACKEND ENDPOINT FOR THIS
+	},
+	mergeDetails: (item, d) => ({
+		...item,
+		seasons: d.number_of_seasons,
+		networks: d.networks.map((n: any) => n.name).join(', '),
+		episodes: d.seasons.map((s: any) => s.episode_count),
+		total_episodes: d.number_of_episodes
 	})
 });

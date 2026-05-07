@@ -24,6 +24,8 @@ export class MediaStore<
 	readonly prefix: string;
 	readonly fetchUrl: (query: string) => string;
 	readonly transform: (data: R) => T;
+	readonly detailUrl?: (id: T['id']) => string;
+	readonly mergeDetails?: (item: T, details: any) => T;
 
 	completed = $state<T[]>([]);
 	progress = $state<T[]>([]);
@@ -48,10 +50,14 @@ export class MediaStore<
 		prefix: string;
 		fetchUrl: (query: string) => string;
 		transform: (data: R) => T;
+		detailUrl?: (id: T['id']) => string;
+		mergeDetails?: (item: T, details: any) => T;
 	}) {
 		this.prefix = config.prefix;
 		this.fetchUrl = config.fetchUrl;
 		this.transform = config.transform;
+		this.detailUrl = config.detailUrl;
+		this.mergeDetails = config.mergeDetails;
 
 		this.completed = loadFromStorage(`${this.prefix}_completed`);
 		this.progress = loadFromStorage(`${this.prefix}_progress`);
@@ -132,6 +138,18 @@ export class MediaStore<
 			this.results = [
 				...new SvelteMap(transformedData.map((item: T) => [item['id'] as T['id'], item])).values()
 			];
+
+			// Perform individual search to get more info for shows + movies
+			if (this.detailUrl && this.mergeDetails) {
+				const detailResponses = await Promise.all(
+					transformedData.map((item) =>
+						fetch(this.detailUrl!(item.id), API_OPTIONS).then((r) => r.json())
+					)
+				);
+				this.results = transformedData.map((item: T, i) =>
+					this.mergeDetails!(item, detailResponses[i])
+				);
+			}
 		} catch (e) {
 			console.error(e);
 			this.results = [];
