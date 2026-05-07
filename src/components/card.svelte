@@ -13,12 +13,17 @@
 		dateAdded,
 		progressValue,
 		progressMax,
+		seasonCount,
+		seasonProgress,
+		progressUnit,
+		onSeasonChange,
 		onPersonalScoreChange,
 		onPillMainClick,
 		onProgressChange,
 		onStatusChange,
 		statusVerbs
 	}: CardData & {
+		onSeasonChange: (value: number) => void;
 		onPersonalScoreChange: (value: number) => void;
 		onPillMainClick: () => void;
 		onProgressChange: (value: number) => void;
@@ -34,6 +39,22 @@
 
 	function progressDecrease() {
 		onProgressChange(progressValue ? (progressValue - 1 >= 0 ? progressValue - 1 : 0) : 0);
+	}
+
+	function seasonIncrease() {
+		console.log('triggered season increase');
+		if (seasonProgress && seasonCount) {
+			const next = seasonProgress + 1 <= seasonCount ? seasonProgress + 1 : seasonCount;
+			console.log('next', next);
+			onSeasonChange(next);
+			onProgressChange(1); // reset episode progress
+		}
+	}
+
+	function seasonDecrease() {
+		const previous = (seasonProgress ?? 1) - 1 >= 1 ? (seasonProgress ?? 1) - 1 : 1;
+		onSeasonChange(previous);
+		onProgressChange(1);
 	}
 </script>
 
@@ -107,36 +128,86 @@
 							<span class="mr-2 icon-[fluent-mdl2--completed-solid] text-xs"></span>
 							{dateAdded}
 						{:else if status === 'progress'}
-							<div class="ml-1 group-hover:hidden">{progressValue || 0}</div>
-							<div class="ml-1 hidden items-center group-hover:flex">
-								<span
-									role="button"
-									tabindex="0"
-									title="Decrease"
-									class="icon-[icons8--minus] cursor-pointer"
-									onclick={progressDecrease}
-									onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && progressDecrease()}
-								>
-								</span>
-								<input
-									class="w-10 rounded-md border-2 border-dashed focus:outline-none"
-									value={progressValue}
-									oninput={(e) => onProgressChange(Number((e.target as HTMLInputElement).value))}
-									onmouseleave={(e) => (e.target as HTMLInputElement).blur()}
-								/>
-								<span
-									role="button"
-									tabindex="0"
-									title="Increase"
-									class="icon-[icons8--plus] cursor-pointer"
-									onclick={progressIncrease}
-									onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && progressIncrease()}
-								>
-								</span>
+							<!-- Collapsed display -->
+							<div class="ml-1 group-hover:hidden">
+								{#if seasonCount}Season {seasonProgress} - Ep {progressValue}
+								{:else}
+									{progressUnit}
+									{progressValue}
+									{#if progressMax}
+										/ {progressMax}
+									{/if}
+								{/if}
 							</div>
-							{#if progressMax}
-								/{progressMax}
-							{/if}
+
+							<!-- Expanded on hover -->
+							<div class="ml-1 hidden items-center group-hover:flex">
+								{#if seasonCount}
+									S
+									<div class="mr-1 flex h-8 self-center overflow-hidden rounded-md border-2">
+										<input
+											class="w-8 bg-transparent text-center focus:outline-none"
+											value={seasonProgress}
+											oninput={(e) => onSeasonChange(Number((e.target as HTMLInputElement).value))}
+											onmouseleave={(e) => (e.target as HTMLInputElement).blur()}
+										/>
+										<div class="flex flex-col">
+											<div
+												role="button"
+												tabindex="0"
+												title="Next Season"
+												class="flex flex-1 cursor-pointer items-center justify-center bg-surface0 px-0.5 hover:bg-surface1"
+												onclick={seasonIncrease}
+												onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && seasonIncrease()}
+											>
+												<span class="icon-[tabler--chevron-up] h-4 text-xs text-peach"></span>
+											</div>
+											<div
+												role="button"
+												tabindex="0"
+												title="Previous Season"
+												class="flex flex-1 cursor-pointer items-center justify-center bg-surface0 px-0.5 hover:bg-surface1"
+												onclick={seasonDecrease}
+												onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && seasonDecrease()}
+											>
+												<span class="icon-[tabler--chevron-down] h-4 text-xs text-peach"></span>
+											</div>
+										</div>
+									</div>
+								{/if}
+								Ep
+
+								<div class="flex h-8 self-center overflow-hidden rounded-md border-2">
+									<input
+										class="w-8 bg-transparent text-center focus:outline-none"
+										value={progressValue}
+										oninput={(e) => onProgressChange(Number((e.target as HTMLInputElement).value))}
+										onmouseleave={(e) => (e.target as HTMLInputElement).blur()}
+									/>
+									<div class="flex flex-col">
+										<div
+											role="button"
+											tabindex="0"
+											title="Increase"
+											class="flex flex-1 cursor-pointer items-center justify-center bg-surface0 px-0.5 hover:bg-surface1"
+											onclick={progressIncrease}
+											onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && progressIncrease()}
+										>
+											<span class="icon-[tabler--chevron-up] h-4 text-xs text-peach"></span>
+										</div>
+										<div
+											role="button"
+											tabindex="0"
+											title="Decrease"
+											class="flex flex-1 cursor-pointer items-center justify-center bg-surface0 px-0.5 hover:bg-surface1"
+											onclick={progressDecrease}
+											onkeydown={(e) => (e.key === 'Enter' || e.key === ' ') && progressDecrease()}
+										>
+											<span class="icon-[tabler--chevron-down] h-4 text-xs text-peach"></span>
+										</div>
+									</div>
+								</div>
+							</div>
 						{:else if status === 'planned'}
 							Planned
 						{:else}

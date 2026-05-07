@@ -96,4 +96,5 @@ export interface CardData {
 	personalRating?: number;
 	seasonProgress?: number;
 	seasonCount?: number;
+	progressUnit: 'Page' | 'Episode' | 'Chapter' | 'Minute';
 }

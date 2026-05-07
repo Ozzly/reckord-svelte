@@ -54,6 +54,10 @@
 			onStatusChange={(newStatus) => setStatus(show, newStatus)}
 			onProgressChange={(value) => onProgressChange(value, show.id)}
 			statusVerbs={{ completed: 'Watched', progress: 'Watching', planned: 'Planned' }}
+			onSeasonChange={(value) => {
+				console.log('onSeasonChange in page ', value);
+				showStore.setSeasonProgress(show.id, value);
+			}}
 		/>
 	{/each}
 </div>

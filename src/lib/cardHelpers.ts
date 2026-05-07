@@ -13,7 +13,8 @@ export function animeToCardData(anime: Anime): CardData {
 		progressValue: anime.progressValue,
 		dateAdded: anime.dateAdded,
 		status: anime.status,
-		personalRating: anime.personalRating
+		personalRating: anime.personalRating,
+		progressUnit: 'Episode'
 	};
 }
 
@@ -30,7 +31,8 @@ export function mangaToCardData(manga: Manga): CardData {
 		progressValue: manga.progressValue,
 		dateAdded: manga.dateAdded,
 		status: manga.status,
-		personalRating: manga.personalRating
+		personalRating: manga.personalRating,
+		progressUnit: 'Chapter'
 	};
 }
 
@@ -47,7 +49,8 @@ export function bookToCardData(book: Book): CardData {
 		progressValue: book.progressValue,
 		dateAdded: book.dateAdded,
 		status: book.status,
-		personalRating: book.personalRating
+		personalRating: book.personalRating,
+		progressUnit: 'Page'
 	};
 }
 
@@ -64,7 +67,8 @@ export function movieToCardData(movie: Movie): CardData {
 		progressValue: movie.progressValue,
 		dateAdded: movie.dateAdded,
 		status: movie.status,
-		personalRating: movie.personalRating
+		personalRating: movie.personalRating,
+		progressUnit: 'Minute'
 	};
 }
 
@@ -74,7 +78,9 @@ export function showToCardData(show: Show): CardData {
 		title: show.title,
 		subheading: show.networks || 'Unknown Network',
 		image: 'https://image.tmdb.org/t/p/w500' + show.cover_image,
-		progressMax: 1,
+		progressMax: show.episodes?.[(show.seasonProgress ?? 1) - 1] ?? 0,
+		seasonProgress: show.seasonProgress ?? 1,
+		seasonCount: show.seasons,
 		releaseDate: String(show.release_year),
 		score: show.score,
 		leftDetails: show.seasons
@@ -87,6 +93,7 @@ export function showToCardData(show: Show): CardData {
 		progressValue: show.progressValue,
 		dateAdded: show.dateAdded,
 		status: show.status,
-		personalRating: show.personalRating
+		personalRating: show.personalRating,
+		progressUnit: 'Episode'
 	};
 }
