@@ -16,6 +16,7 @@ export class MediaStore<
 		title: string;
 		status?: Status | null;
 		progressValue?: number;
+		seasonProgress?: number;
 		dateAdded?: string;
 		personalRating?: number;
 	},
@@ -41,7 +42,8 @@ export class MediaStore<
 				status,
 				personalRating: storedItemDetails?.personalRating,
 				dateAdded: storedItemDetails?.dateAdded,
-				progressValue: storedItemDetails?.progressValue
+				progressValue: storedItemDetails?.progressValue,
+				seasonProgress: storedItemDetails?.seasonProgress
 			};
 		})
 	);
@@ -77,6 +79,7 @@ export class MediaStore<
 		const updatedItem = { ...item, dateAdded: moment().format('DD/MM/YY') };
 		if (status === 'progress') {
 			updatedItem.progressValue = 1;
+			updatedItem.seasonProgress = 1;
 		}
 		const updatedList = [...this[status], updatedItem];
 
@@ -118,6 +121,17 @@ export class MediaStore<
 		} else {
 			updatedItem = { ...this.progress[index], progressValue: value };
 		}
+		const updatedList = [...this.progress];
+		updatedList[index] = updatedItem;
+		this.progress = updatedList;
+		localStorage.setItem(`${this.prefix}_progress`, JSON.stringify(updatedList));
+	}
+
+	setSeasonProgress(id: T['id'], value: number | null) {
+		const index = this.progress.findIndex((i) => i.id === id);
+		if (index === -1) return;
+
+		const updatedItem = { ...this.progress[index], seasonProgress: value ?? undefined };
 		const updatedList = [...this.progress];
 		updatedList[index] = updatedItem;
 		this.progress = updatedList;

@@ -76,8 +76,9 @@ export interface Show {
 	personalRating?: number;
 	seasons?: number;
 	networks?: string;
-	episodes?: string[];
+	episodes?: number[];
 	total_episodes?: number;
+	seasonProgress?: number;
 }
 
 export interface CardData {
@@ -93,4 +94,6 @@ export interface CardData {
 	dateAdded?: string;
 	status?: Status;
 	personalRating?: number;
+	seasonProgress?: number;
+	seasonCount?: number;
 }
