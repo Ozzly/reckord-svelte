@@ -72,12 +72,18 @@ export function showToCardData(show: Show): CardData {
 	return {
 		id: show.id,
 		title: show.title,
-		subheading: '',
+		subheading: show.networks || 'Unknown Network',
 		image: 'https://image.tmdb.org/t/p/w500' + show.cover_image,
 		progressMax: 1,
 		releaseDate: String(show.release_year),
 		score: show.score,
-		leftDetails: '',
+		leftDetails: show.seasons
+			? show.seasons > 1
+				? show.seasons + ' seasons'
+				: show.total_episodes
+					? show.total_episodes + (show.total_episodes == 1 ? ' episode' : ' episodes')
+					: 'Unknown Episodes'
+			: 'Unknown Seasons',
 		progressValue: show.progressValue,
 		dateAdded: show.dateAdded,
 		status: show.status,

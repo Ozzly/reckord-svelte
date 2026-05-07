@@ -74,6 +74,10 @@ export interface Show {
 	progressValue?: number;
 	status?: Status;
 	personalRating?: number;
+	seasons?: number;
+	networks?: string;
+	episodes?: string[];
+	total_episodes?: number;
 }
 
 export interface CardData {
