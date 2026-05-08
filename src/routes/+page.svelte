@@ -14,22 +14,27 @@
 		showStore
 	} from '$lib/stores/stores.svelte';
 	import Card from '../components/card.svelte';
+	import { resolve } from '$app/paths';
+	import type { Pathname } from '$app/types';
 
 	const rows = [
 		{
 			label: 'Anime',
+			link: '/anime' as Pathname,
 			store: animeStore,
 			toCard: animeToCardData,
 			statusVerbs: { completed: 'Watched', progress: 'Watching', planned: 'Planned' }
 		},
 		{
 			label: 'Manga',
+			link: '/manga' as Pathname,
 			store: mangaStore,
 			toCard: mangaToCardData,
 			statusVerbs: { completed: 'Read', progress: 'Reading', planned: 'Planned' }
 		},
 		{
 			label: 'Shows',
+			link: '/shows' as Pathname,
 			store: showStore,
 			toCard: showToCardData,
 			statusVerbs: { completed: 'Watched', progress: 'Watching', planned: 'Planned' },
@@ -37,12 +42,14 @@
 		},
 		{
 			label: 'Movies',
+			link: '/movies' as Pathname,
 			store: movieStore,
 			toCard: movieToCardData,
 			statusVerbs: { completed: 'Watched', progress: 'Watching', planned: 'Planned' }
 		},
 		{
 			label: 'Books',
+			link: '/books' as Pathname,
 			store: bookStore,
 			toCard: bookToCardData,
 			statusVerbs: { completed: 'Read', progress: 'Reading', planned: 'Planned' }
@@ -73,7 +80,16 @@
 	{#each rows as row (row.label)}
 		{#if row.store.enrichedResults.length}
 			<section class="h-fit w-full p-4">
-				<h2 class="mb-2 text-lg font-bold">{row.label}</h2>
+				<div class="mb-2 flex items-center justify-between">
+					<h2 class="text-xl font-bold">{row.label}</h2>
+					<a
+						href={resolve(row.link)}
+						class="flex cursor-pointer items-center gap-2 p-2 text-sm text-mauve underline"
+					>
+						View All
+						<span class="icon-[line-md--arrow-right]"></span>
+					</a>
+				</div>
 				<div class="flex flex-wrap gap-4">
 					{#each row.store.enrichedResults.slice(0, PREVIEW_COUNT) as item (item.id)}
 						<Card
