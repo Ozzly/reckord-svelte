@@ -3,7 +3,7 @@ import { createContext } from 'svelte';
 
 interface Search {
 	searchTerm: string;
-	category: Category;
+	category: Category | 'all';
 }
 
 export const [getSearchContext, setSearchContext] = createContext<Search>();

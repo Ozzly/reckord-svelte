@@ -16,7 +16,7 @@
 
 	let { children } = $props();
 
-	let search = $state({ searchTerm: '', category: 'books' as Category });
+	let search = $state({ searchTerm: '', category: '' as Category | 'all' });
 	setSearchContext(search);
 
 	const storeMap: Record<Category, { search: (q: string) => Promise<void>; results: unknown[] }> = {
@@ -31,12 +31,17 @@
 
 	$effect(() => {
 		const path = page.url.pathname.slice(1).split('/')[0];
-		const category = categories.includes(path as Category) ? (path as Category) : 'books';
-		const store = storeMap[category];
-		if (search.searchTerm) {
-			store.search(search.searchTerm);
+		const category = categories.includes(path as Category) ? (path as Category) : 'all';
+
+		if (category === 'all') {
+			categories.forEach((c) => {
+				if (search.searchTerm) storeMap[c].search(search.searchTerm);
+				else storeMap[c].results = [];
+			});
 		} else {
-			store.results = [];
+			const store = storeMap[category];
+			if (search.searchTerm) store.search(search.searchTerm);
+			else store.results = [];
 		}
 	});
 </script>

@@ -23,7 +23,7 @@
 		onStatusChange,
 		statusVerbs
 	}: CardData & {
-		onSeasonChange: (value: number) => void;
+		onSeasonChange?: (value: number) => void;
 		onPersonalScoreChange: (value: number) => void;
 		onPillMainClick: () => void;
 		onProgressChange: (value: number) => void;
@@ -46,19 +46,19 @@
 		if (seasonProgress && seasonCount) {
 			const next = seasonProgress + 1 <= seasonCount ? seasonProgress + 1 : seasonCount;
 			console.log('next', next);
-			onSeasonChange(next);
+			onSeasonChange!(next);
 			onProgressChange(1); // reset episode progress
 		}
 	}
 
 	function seasonDecrease() {
 		const previous = (seasonProgress ?? 1) - 1 >= 1 ? (seasonProgress ?? 1) - 1 : 1;
-		onSeasonChange(previous);
+		onSeasonChange!(previous);
 		onProgressChange(1);
 	}
 </script>
 
-<div class="group relative w-120">
+<div class="group relative w-120 shrink-0">
 	<!-- Corner brackets -->
 	<span class="corner corner-tl"></span>
 	<span class="corner corner-tr"></span>
@@ -148,7 +148,7 @@
 										<input
 											class="w-8 bg-transparent text-center focus:outline-none"
 											value={seasonProgress}
-											oninput={(e) => onSeasonChange(Number((e.target as HTMLInputElement).value))}
+											oninput={(e) => onSeasonChange!(Number((e.target as HTMLInputElement).value))}
 											onmouseleave={(e) => (e.target as HTMLInputElement).blur()}
 										/>
 										<div class="flex flex-col">
