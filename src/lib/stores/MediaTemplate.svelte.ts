@@ -145,7 +145,9 @@ export class MediaStore<
 			const response = await fetch(this.fetchUrl(query), API_OPTIONS);
 			if (!response.ok) throw new Error(response.statusText);
 			const data = await response.json();
-			const transformedData: T[] = (data.data ?? data.docs ?? data.results ?? []).map(
+			console.log('response', data);
+			console.log('data items', data.items);
+			const transformedData: T[] = (data.data ?? data.docs ?? data.results ?? data.items ?? []).map(
 				this.transform
 			);
 

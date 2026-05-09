@@ -6,6 +6,15 @@ export async function GET({ url }) {
 	const response = await fetch(
 		`https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(query)}&key=${GOOGLE_BOOKS_API_KEY}`
 	);
+
+	if (!response.ok) {
+		const fallback = await fetch(
+			`https://openlibrary.org/search.json?q=${encodeURIComponent(query)}`
+		);
+		const data = await fallback.json();
+		return json(data);
+	}
+
 	const data = await response.json();
 	return json(data);
 }
