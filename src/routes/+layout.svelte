@@ -82,7 +82,7 @@
 		</div>
 
 		<div class="absolute bottom-0 flex w-full flex-col gap-1 border-t border-surface1 p-6">
-			<a href={resolve('/settings')} class:active={page.url.pathname === '/settings'}>
+			<a href={resolve('/settings/api')} class:active={page.url.pathname.startsWith('/settings')}>
 				<span class="icon-[solar--settings-linear]"></span>
 				Settings
 			</a>
